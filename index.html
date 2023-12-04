@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Escáner de Código QR</title>
+    <link rel="stylesheet" href="./js/html5-qrcode.min.js">
+    <link rel="manifest" href="./json/manifest.json">
+
+    <script type="text/javascript">
+        if ("serviceWorker" in navigator) {
+          navigator.serviceWorker.register("sw.js");
+        }
+      </script>
+</head>
+<body>
+    <h1>Escáner de Código QR</h1>
+    <div id="reader" style="width: 300px; height: 300px;"></div>
+    <div id="miDiv"></div>
+
+    <script src="./js/html5-qrcode.min.js"></script>
+    <script>
+        const qrCodeReader = new Html5Qrcode("reader");
+        const miDiv = document.getElementById('miDiv');
+
+        qrCodeReader.start(
+            { facingMode: "environment" },
+            {
+                fps: 10,
+                qrbox: 250,
+            },
+            (decodedText) => {
+                console.log(`Código QR detectado: ${decodedText}`);
+                miDiv.innerHTML = decodedText;
+                
+                // Realiza una solicitud HTTP para obtener información desde la URL del QR
+            },
+            (errorMessage) => {
+                console.error(`Error: ${errorMessage}`);
+                miDiv.innerHTML = "Error al escanear QR";
+            }
+        );
+
+
+
+    </script>
+</body>
+</html>
